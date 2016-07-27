@@ -43,6 +43,7 @@ struct view_s {
 	struct view_s* next;
 	struct view_s* prev;
 	bool sync;
+	bool drefresh;
 
 	const char* name;
 
@@ -90,6 +91,7 @@ struct view_s {
 	GtkAdjustment* gtk_aniso;
 	GtkEntry* gtk_entry;
 	GtkToggleToolButton* gtk_transpose;
+	GtkToggleToolButton* gtk_drefresh;
 
 	GtkAdjustment* gtk_posall[DIMS];
 	GtkCheckButton* gtk_checkall[DIMS];
@@ -175,11 +177,8 @@ extern gboolean fit_callback(GtkWidget *widget, gpointer data)
 	return FALSE;
 }
 
-
-extern gboolean refresh_callback(GtkWidget *widget, gpointer data)
+void refresh(struct view_s* v)
 {
-	struct view_s* v = data;
-
 	v->invalid = true;
 
 	long size = md_calc_size(DIMS, v->dims);
@@ -194,6 +193,34 @@ extern gboolean refresh_callback(GtkWidget *widget, gpointer data)
 	v->max = max;
 
 	update_view(v);
+}
+
+
+extern gboolean refresh_callback(GtkWidget *widget, gpointer data)
+{
+	struct view_s* v = data;
+	refresh(v);
+
+	return FALSE;
+}
+
+extern gboolean drefresh(gpointer data)
+{
+	struct view_s* v = data;
+	refresh(v);
+	
+	return gtk_toggle_tool_button_get_active(v->gtk_drefresh);
+}
+
+
+
+extern gboolean drefresh_callback(GtkWidget *widget, gpointer data)
+{
+	struct view_s* v = data;
+	v->drefresh = gtk_toggle_tool_button_get_active(v->gtk_drefresh);
+
+	if (v->drefresh)
+		g_timeout_add(100, drefresh, v);
 
 	return FALSE;
 }
@@ -398,6 +425,7 @@ struct view_s* create_view(const char* name, long* pos, const long dims[DIMS], c
 
 	v->next = v->prev = v;
 	v->sync = true;
+	v->drefresh = false;
 
 	v->name = name;
 	v->pos = pos;
@@ -460,6 +488,7 @@ extern gboolean toggle_sync(GtkWidget *widget, GtkToggleButton* button, gpointer
 
 	return FALSE;
 }
+
 
 
 static void update_status_bar(struct view_s* v, int x2, int y2)
@@ -623,6 +652,8 @@ extern struct view_s* window_new(const char* name, long* pos, const long dims[DI
 	gtk_combo_box_set_active(v->gtk_flip, 0);
 
 	v->gtk_transpose = GTK_TOGGLE_TOOL_BUTTON(gtk_builder_get_object(builder, "transpose"));
+	
+	v->gtk_drefresh = GTK_TOGGLE_TOOL_BUTTON(gtk_builder_get_object(builder, "drefresh"));
 
 	for (int j = 0; j < DIMS; j++) {
 
@@ -647,16 +678,19 @@ extern struct view_s* window_new(const char* name, long* pos, const long dims[DI
 	gtk_window_set_title(window, name);
 
 	// FIXME: don't use hard coded boundaries
-	gtk_window_set_default_size(window, v->dims[v->xdim] * v->xzoom+2, v->dims[v->ydim] * v->yzoom+120);
+	int w, h;
+	gtk_window_get_size(window, &w, &h);
+	gtk_window_set_default_size(window, MAX(v->dims[v->xdim] * v->xzoom+5, w), MAX(v->dims[v->ydim] * v->yzoom+125, h));
 
 	gtk_widget_show(GTK_WIDGET(window));
 
 	nr_windows++;
 
 	refresh_callback(NULL, v);
+	drefresh_callback(NULL, v);
 	geom_callback(NULL, v);
 	window_callback(NULL, v);
-
+	
 	return v;
 }
 

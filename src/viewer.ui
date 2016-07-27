@@ -15,19 +15,19 @@
     </columns>
     <data>
       <row>
-        <col id="0" translatable="yes">MAGNITUDE</col>
+        <col id="0" translatable="yes">M</col>
       </row>
       <row>
-        <col id="0" translatable="yes">COMPLEX</col>
+        <col id="0" translatable="yes">C</col>
       </row>
       <row>
-        <col id="0" translatable="yes">PHASE</col>
+        <col id="0" translatable="yes">P</col>
       </row>
       <row>
-        <col id="0" translatable="yes">REAL</col>
+        <col id="0" translatable="yes">R</col>
       </row>
       <row>
-        <col id="0" translatable="yes">FLOW</col>
+        <col id="0" translatable="yes">F</col>
       </row>
     </data>
   </object>
@@ -300,19 +300,33 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToggleToolButton" id="toolbutton13">
+              <object class="GtkToggleToolButton" id="drefresh">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">sync</property>
+                <property name="label" translatable="yes">drefresh</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-connect</property>
-                <signal name="clicked" handler="toggle_sync" swapped="no"/>
+                <signal name="toggled" handler="drefresh_callback" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <!-- <child> -->
+            <!--   <object class="GtkToggleToolButton" id="toolbutton13"> -->
+            <!--     <property name="visible">True</property> -->
+            <!--     <property name="can_focus">False</property> -->
+            <!--     <property name="label" translatable="yes">sync</property> -->
+            <!--     <property name="use_underline">True</property> -->
+            <!--     <property name="stock_id">gtk-connect</property> -->
+            <!--     <signal name="clicked" handler="toggle_sync" swapped="no"/> -->
+            <!--   </object> -->
+            <!--   <packing> -->
+            <!--     <property name="expand">False</property> -->
+            <!--     <property name="homogeneous">True</property> -->
+            <!--   </packing> -->
+            <!-- </child> -->
           </object>
           <packing>
             <property name="expand">False</property>
