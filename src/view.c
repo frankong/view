@@ -665,6 +665,18 @@ extern struct view_s* window_new(const char* name, long* pos, const long dims[DI
 
 		snprintf(pname, 10, "check%02d", j);
 		v->gtk_checkall[j] = GTK_CHECK_BUTTON(gtk_builder_get_object(builder, pname));
+		if (dims[j] == 1)
+			gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(builder, pname)));
+	}
+	
+	for (int j = DIMS-1; j >= 0 && dims[j] == 1; j--) {
+
+		char pname[20];
+		snprintf(pname, 20, "spinbutton%02d", j);
+		gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(builder, pname)));
+
+		snprintf(pname, 20, "check%02d", j);
+		gtk_widget_hide(GTK_WIDGET(gtk_builder_get_object(builder, pname)));
 	}
 
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(v->gtk_checkall[v->xdim]), TRUE);
