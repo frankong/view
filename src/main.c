@@ -58,7 +58,8 @@ int main(int argc, char* argv[])
 				      || !strcmp(dot, ".")))
 			*dot = '\0';
 
-		complex float* x = load_cfl(argv[i], DIMS, dims);
+		//complex float* x = load_cfl(argv[i], DIMS, dims);
+		complex float* x = load_shared_cfl(argv[i], DIMS, dims);
 
 
 
