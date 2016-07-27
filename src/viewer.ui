@@ -289,7 +289,7 @@
               <object class="GtkToolButton" id="toolbutton12">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Refresh</property>
+                <property name="label" translatable="yes">refresh</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
                 <signal name="clicked" handler="refresh_callback" swapped="no"/>
@@ -462,7 +462,7 @@
               <object class="GtkToggleToolButton" id="toolbutton8">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">showpos</property>
+                <property name="label" translatable="yes">show slice position</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-preferences</property>
                 <signal name="toggled" handler="show_hide" object="scrolledwindow2" swapped="yes"/>
