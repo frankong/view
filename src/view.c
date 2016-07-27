@@ -646,6 +646,9 @@ extern struct view_s* window_new(const char* name, long* pos, const long dims[DI
 
 	gtk_window_set_title(window, name);
 
+	// FIXME: don't use hard coded boundaries
+	gtk_window_set_default_size(window, v->dims[v->xdim] * v->xzoom+2, v->dims[v->ydim] * v->yzoom+120);
+
 	gtk_widget_show(GTK_WIDGET(window));
 
 	nr_windows++;
